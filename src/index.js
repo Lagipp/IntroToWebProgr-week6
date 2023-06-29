@@ -1,4 +1,5 @@
 import "./styles.css";
+import { Chart } from "frappe-charts/dist/frappe-charts.min.esm";
 
 const query = {
   query: [
@@ -64,9 +65,26 @@ const getData = async () => {
 
   const data = await res.json();
 
-  console.log(data);
-
   return data;
 };
 
-getData();
+const buildChart = async () => {
+  const data = await getData();
+  // console.log(data);
+
+  const labels = Object.values(data.dimension.Vuosi.category.label);
+
+  const chartData = () => {
+    labels: labels;
+  };
+
+  const chart = new frappe.Chart("#chart", {
+    title: "Population growth per municipality in Finland",
+    data: chartData,
+    type: "line",
+    height: 450,
+    colors: ["#eb5146"]
+  });
+};
+
+buildChart();
